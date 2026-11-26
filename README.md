@@ -1,5 +1,9 @@
 # 知序
 
+[![Release](https://img.shields.io/github/v/release/DOIT008/zhixu?label=release&color=2e7d5b)](https://github.com/DOIT008/zhixu/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue)](https://github.com/DOIT008/zhixu/releases)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 > 一款现代、克制的桌面 Markdown 编辑器。写作、预览、发布，一个窗口全部搞定。
 
 知序（Zhixu）是基于 Electron 的 Windows 桌面 Markdown 编辑器。它把本地工作区、语雀式排版工具栏、实时预览、VitePress 兼容渲染和可选的 GitHub 发布流程整合在一起，界面采用纯色层次设计，不依赖网络即可离线写作。
@@ -15,6 +19,20 @@
 - **发布前先看清楚**：Git blob 精确对比远端差异，逐文件查看 diff、勾选要发布的内容，再一次性提交并触发 Actions。
 - **写作体验的细节**：多标签、大纲与目录导轨、查找替换、版本快照、草稿恢复、命令面板、写作统计、关系图谱、暗色与情绪主题。
 - **完全离线**：Markdown 渲染、语法高亮、KaTeX 公式字体全部内置，不联网也能完整写作与预览。
+
+---
+
+## 下载
+
+Windows x64 用户可直接使用编译好的安装包，无需配置 Node.js 环境：
+
+| 版本 | 文件 | 说明 |
+| --- | --- | --- |
+| 最新 | [Releases 页面](https://github.com/DOIT008/zhixu/releases/latest) | 自动构建的正式版，含安装包与便携版 |
+| v1.0.0 | `知序-1.0.0-x64.exe` | NSIS 安装程序，可自定义安装目录 |
+| v1.0.0 | `知序-1.0.0-portable.exe` | 免安装便携版，双击即用 |
+
+> 应用未做代码签名，首次运行可能触发 Windows SmartScreen 提示，选择「仍要运行」即可。校验版本请对照 Releases 页面的变更记录。
 
 ---
 
