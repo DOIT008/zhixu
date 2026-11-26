@@ -1,0 +1,68 @@
+{
+  "name": "mojian",
+  "version": "1.0.0",
+  "description": "知序 — 一款现代桌面 Markdown 编辑器，支持工作区目录树、语雀式工具栏与可选的 GitHub 发布流程。",
+  "main": "src/main/main.js",
+  "author": "WorkBuddy",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/markdown-studio.git"
+  },
+  "publish": null,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "pack": "electron-builder --dir",
+    "build:win": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win --x64 --portable"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.workbuddy.mojian",
+    "productName": "知序",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "知序-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "知序"
+    },
+    "portable": {
+      "artifactName": "知序-${version}-portable.${ext}"
+    }
+  },
+  "dependencies": {
+    "katex": "^0.16.11"
+  }
+}

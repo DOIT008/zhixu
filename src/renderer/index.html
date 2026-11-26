@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: http:; font-src 'self' data:; connect-src 'none'" />
+  <title>知序</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="mode-split">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-folder-back" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#6ee7b7"/>
+        <stop offset="100%" stop-color="#34d399"/>
+      </linearGradient>
+      <linearGradient id="g-folder-front" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#34d399"/>
+        <stop offset="100%" stop-color="#059669"/>
+      </linearGradient>
+      <linearGradient id="g-file" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f0fdf4"/>
+        <stop offset="100%" stop-color="#d1fae5"/>
+      </linearGradient>
+    </defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/></symbol>
+    <symbol id="i-folder-modern" viewBox="0 0 24 24">
+      <path fill="url(#g-folder-back)" d="M2.6 6.6A2.4 2.4 0 0 1 5 4.2h4.3a2 2 0 0 1 1.42.59L12.1 6H19a2.4 2.4 0 0 1 2.4 2.4v1.1H2.6Z"/>
+      <path fill="url(#g-folder-front)" d="M2.6 9.5h18.8v7.7A2.4 2.4 0 0 1 19 19.6H5a2.4 2.4 0 0 1-2.4-2.4Z"/>
+    </symbol>
+    <symbol id="i-file-modern" viewBox="0 0 24 24">
+      <path fill="url(#g-file)" stroke="#059669" stroke-width="1.3" stroke-linejoin="round" d="M6 2.6h7.9l5 5V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4.6a2 2 0 0 1 2-2Z"/>
+      <path fill="#a7f3d0" stroke="#059669" stroke-width="1.1" stroke-linejoin="round" d="M13.9 2.6v5h5"/>
+      <path fill="none" stroke="#34d399" stroke-width="1.4" stroke-linecap="round" d="M7.8 12.6h8.4M7.8 15.8h8.4M7.8 19h5.2"/>
+    </symbol>
+    <symbol id="i-bold" viewBox="0 0 24 24"><path d="M7 5h6a4 4 0 0 1 0 8H7Z"/><path d="M7 13h7a4 4 0 0 1 0 8H7Z"/></symbol>
+    <symbol id="i-italic" viewBox="0 0 24 24"><path d="M14 5h5M9 19h5M15 5 9 19"/></symbol>
+    <symbol id="i-strike" viewBox="0 0 24 24"><path d="M5 12h14M8 8a4 4 0 0 1 8 0M8 16a4 4 0 0 0 8 0"/></symbol>
+    <symbol id="i-underline" viewBox="0 0 24 24"><path d="M7 4v7a5 5 0 0 0 10 0V4M5 20h14"/></symbol>
+    <symbol id="i-color" viewBox="0 0 24 24"><path d="m5 16 6-13 8 8-6 6H5Z"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-highlight" viewBox="0 0 24 24"><path d="m4 14 8-8 6 6-8 8H4Z"/><path d="M13 5 18 0M3 21h18"/></symbol>
+    <symbol id="i-align" viewBox="0 0 24 24"><path d="M4 6h16M4 10h10M4 14h16M4 18h10"/></symbol>
+    <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M4 6h16M4 10h10M4 14h16M4 18h10"/></symbol>
+    <symbol id="i-align-center" viewBox="0 0 24 24"><path d="M4 6h16M7 10h10M4 14h16M7 18h10"/></symbol>
+    <symbol id="i-align-right" viewBox="0 0 24 24"><path d="M4 6h16M10 10h10M4 14h16M10 18h10"/></symbol>
+    <symbol id="i-align-justify" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></symbol>
+    <symbol id="i-ul" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+    <symbol id="i-ol" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10M4 5h1v3M4 11h2l-2 3h2M4 17h2v1H4v2h2"/></symbol>
+    <symbol id="i-task" viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="7" rx="1.5"/><path d="m5 7.5 1.5 1.5L9 6"/><path d="M14 7h7M14 17h7M3 17h7"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 .5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7-.5l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 7H4v6h5v-3H6M17 7h-3v6h5v-3h-3"/></symbol>
+    <symbol id="i-hr" viewBox="0 0 24 24"><path d="M4 12h16M7 7h10M7 17h10"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 18 5-5 4 4 3-3 4 4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m9 7-5 5 5 5M15 7l5 5-5 5"/></symbol>
+    <symbol id="i-codeblock" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m9 10-2 2 2 2M15 10l2 2-2 2"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16M15 4v16"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.2 2.2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21H9.4v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3V9.4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 6.4 6.4 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3h5.2v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 2.2 2.2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1H21v5.2h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6.3"/><path d="M20 5v6h-6"/></symbol>
+    <symbol id="i-min" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-log" viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h11M4 20h8"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-panel-left" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><path d="m15 9-3 3 3 3"/></symbol>
+    <symbol id="i-panel-right" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><path d="m12 9 3 3-3 3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-file-plus" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M12 12v6M9 15h6"/></symbol>
+    <symbol id="i-explorer" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 6.6h.01M10 6.6h.01"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10Z"/><path d="m14.5 6.5 3 3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-new-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M12 11.5v5M9.5 14h5"/></symbol>
+    <symbol id="i-pdf" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h5"/></symbol>
+    <symbol id="i-search-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-indent" viewBox="0 0 24 24"><path d="M11 6h9M11 12h9M11 18h9"/><path d="M4 5v14"/><path d="m4 9 3 3-3 3"/></symbol>
+    <symbol id="i-indent-in" viewBox="0 0 24 24"><path d="M11 6h9M11 12h9M11 18h9"/><path d="m3 9 3 3-3 3"/></symbol>
+    <symbol id="i-indent-out" viewBox="0 0 24 24"><path d="M11 6h9M11 12h9M11 18h9"/><path d="m6 9-3 3 3 3"/></symbol>
+    <symbol id="i-format-brush" viewBox="0 0 24 24"><rect x="3" y="4" width="11" height="5" rx="1"/><path d="M14 5.5h3a2 2 0 0 1 2 2V10a2 2 0 0 1-2 2h-3"/><path d="M8.5 9v5H6a3 3 0 0 0-3 3v3h5v-3"/><path d="M13 19h8"/></symbol>
+    <symbol id="i-clear-format" viewBox="0 0 24 24"><path d="m4 15 8-8a2 2 0 0 1 2.8 0l3.2 3.2a2 2 0 0 1 0 2.8L11 20H7z"/><path d="M4 20h16"/><path d="m9 10 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-focus" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-view-split" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M6 9h3M6 13h3M15 9h3M15 13h3"/></symbol>
+    <symbol id="i-view-editor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h7M7 17h9"/></symbol>
+    <symbol id="i-view-preview" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-sigma" viewBox="0 0 24 24"><path d="M18 5H7l6 7-6 7h11"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></symbol>
+    <symbol id="i-publish" viewBox="0 0 24 24"><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><path d="M12 19V9"/><path d="m8 13 4-4 4 4"/></symbol>
+    <symbol id="i-toast-success" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-toast-error" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v6M12 17h.01"/></symbol>
+    <symbol id="i-toast-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/></symbol>
+  </svg>
+
+  <div class="app">
+    <!-- 自定义标题栏 + 语雀式顶部信息架构 -->
+    <header class="titlebar">
+      <div class="brand"><img class="logo" src="../../build/icon.png" alt=""><span>知序</span></div>
+      <div class="app-menu" id="appMenu">
+        <button type="button" class="app-menu-trigger" id="btnAppMenu" title="菜单（Ctrl+K 搜索命令）" aria-label="打开菜单"><svg class="icon"><use href="#i-menu"></use></svg></button>
+        <div class="app-menu-panel" id="appMenuPanel">
+          <div class="app-menu-search"><input type="text" id="appMenuSearch" placeholder="搜索命令…" autocomplete="off" spellcheck="false" /></div>
+          <nav class="topmenu" id="topmenu">
+        <div class="menu-group" data-menu="file">
+          <button class="menu-trigger">文件</button>
+          <div class="dropdown">
+            <button data-action="workspace:choose">选择工作区…</button>
+            <button data-action="file:new">新建 Markdown 文件</button>
+            <button data-action="file:newFromTemplate">从模板新建…</button>
+            <button data-action="file:open">打开工作区内文件…</button>
+            <div class="menu-submenu" id="recentSubmenu">
+              <button class="submenu-trigger">最近打开…<svg class="icon submenu-caret"><use href="#i-chevron"></use></svg></button>
+              <div class="dropdown submenu" id="recentMenu"></div>
+            </div>
+            <div class="divider"></div>
+            <button data-action="file:save">保存</button>
+            <button data-action="file:saveAs">另存为…</button>
+            <div class="divider"></div>
+            <button data-action="file:exportPdf">导出为 PDF…</button>
+            <div class="divider"></div>
+            <button data-action="app:checkUpdate">检查更新…</button>
+          </div>
+        </div>
+        <div class="menu-group" data-menu="edit">
+          <button class="menu-trigger">编辑</button>
+          <div class="dropdown">
+            <button data-action="edit:undo">撤销</button>
+            <button data-action="edit:redo">重做</button>
+            <div class="divider"></div>
+            <button data-action="format:indentIn">增加缩进</button>
+            <button data-action="format:indentOut">减少缩进</button>
+            <button data-action="format:painter">格式刷</button>
+            <button data-action="format:clear">清除格式</button>
+            <div class="divider"></div>
+            <button data-action="format:superscript">上标 <span class="menu-hint">x²</span></button>
+            <button data-action="format:subscript">下标 <span class="menu-hint">x₂</span></button>
+            <button data-action="format:inlineMath">行内公式 <span class="menu-hint">$…$</span></button>
+            <button data-action="format:mathBlock">公式块 <span class="menu-hint">$$…$$</span></button>
+            <div class="divider"></div>
+            <button data-action="edit:find">查找与替换（当前文档）</button>
+            <button data-action="edit:replace">查找并替换</button>
+            <button data-action="edit:search">在文档中搜索…</button>
+            <button data-action="tools:commandPalette">命令面板…</button>
+            <button data-action="tools:writingStats">写作统计…</button>
+            <div class="divider"></div>
+            <button data-action="tools:checkLinks">链接体检…</button>
+          </div>
+        </div>
+        <div class="menu-group" data-menu="view">
+          <button class="menu-trigger">视图</button>
+          <div class="dropdown">
+            <button data-action="view:zoomIn">放大字号</button>
+            <button data-action="view:zoomOut">缩小字号</button>
+            <button data-action="view:lineHeightUp">增大行高</button>
+            <button data-action="view:lineHeightDown">减小行高</button>
+            <button data-action="view:log">显示/隐藏日志</button>
+            <button data-action="view:sidebar">折叠/展开侧边栏</button>
+            <button data-action="view:syntaxHighlight">源码语法着色</button>
+            <button data-action="view:scrollSync">编辑/预览滚动同步</button>
+            <div class="divider"></div>
+            <button data-action="view:graph">文档关系图谱…</button>
+            <button data-action="view:playground">语法演练场…</button>
+            <div class="divider"></div>
+            <button type="button" id="btnCompactMenu">使用紧凑菜单</button>
+          </div>
+        </div>
+        <div class="menu-group" data-menu="insert">
+          <button class="menu-trigger">语法</button>
+          <div class="dropdown syntax-dropdown">
+            <div class="dropdown-group-title">Markdown 常用</div>
+            <button data-action="insert:heading">标题</button>
+            <button data-action="insert:list">列表</button>
+            <button data-action="insert:quote">引用</button>
+            <button data-action="insert:link">链接</button>
+            <button data-action="insert:image">图片</button>
+            <button data-action="insert:codeblock">代码块</button>
+            <button data-action="insert:table">表格</button>
+            <button data-action="insert:hr">分割线</button>
+            <div class="divider"></div>
+            <div class="dropdown-group-title">VitePress 扩展</div>
+            <button data-action="insert:frontmatter">YAML Frontmatter<span class="vp-tag">VP</span></button>
+            <button data-action="insert:toc">目录 [[toc]]<span class="vp-tag">VP</span></button>
+            <button data-action="insert:tip">提示容器 tip<span class="vp-tag">VP</span></button>
+            <button data-action="insert:info">信息容器 info<span class="vp-tag">VP</span></button>
+            <button data-action="insert:warning">警告容器 warning<span class="vp-tag">VP</span></button>
+            <button data-action="insert:danger">危险容器 danger<span class="vp-tag">VP</span></button>
+            <button data-action="insert:details">折叠面板 details<span class="vp-tag">VP</span></button>
+            <button data-action="insert:codeGroup">代码组 code-group<span class="vp-tag">VP</span></button>
+            <button data-action="insert:codeHighlight">代码块高亮<span class="vp-tag">VP</span></button>
+            <button data-action="insert:alert">GitHub Alert 提示框<span class="vp-tag">VP</span></button>
+            <button data-action="insert:raw">raw 原样容器<span class="vp-tag">VP</span></button>
+            <div class="divider"></div>
+            <button data-action="view:playground">打开语法演练场…</button>
+          </div>
+        </div>
+        <div class="menu-group" data-menu="publish">
+          <button class="menu-trigger">发布</button>
+          <div class="dropdown">
+            <button data-action="publish:check">发布前体检…</button>
+            <button data-action="publish:settings">GitHub 发布设置…</button>
+            <button data-action="publish:pull">从仓库拉取最新（git pull）</button>
+            <button data-action="view:log">打开发布日志</button>
+          </div>
+        </div>
+          </nav>
+          <div class="app-menu-foot">
+            <button type="button" data-action="tools:commandPalette">命令面板… <span class="menu-hint">Ctrl+K</span></button>
+            <button type="button" id="btnClassicMenu">恢复经典菜单栏</button>
+          </div>
+        </div>
+      </div>
+      <div class="window-controls">
+        <button id="winMin" title="最小化"><svg class="icon"><use href="#i-min"></use></svg></button>
+        <button id="winMax" title="最大化"><svg class="icon"><use href="#i-max"></use></svg></button>
+        <button id="winClose" class="close" title="关闭"><svg class="icon"><use href="#i-close"></use></svg></button>
+      </div>
+    </header>
+
+    <!-- 格式化工具栏：按 常用 / 语法 / 高级 分组，一次只显示一组 -->
+    <div class="toolbar" id="toolbar">
+      <div class="tool-group tool-group-base">
+        <button class="tool-btn" data-cmd="new" title="新建文件"><svg class="icon"><use href="#i-plus"></use></svg></button>
+        <button class="tool-btn" data-cmd="undo" title="撤销"><svg class="icon"><use href="#i-undo"></use></svg></button>
+        <button class="tool-btn" data-cmd="redo" title="重做"><svg class="icon"><use href="#i-redo"></use></svg></button>
+        <button class="tool-btn" data-cmd="copy" title="复制选中内容"><svg class="icon"><use href="#i-copy"></use></svg></button>
+        <span class="sep"></span>
+        <div class="custom-select" id="styleSelect" data-value="p" title="段落样式">
+          <button type="button" class="custom-select-trigger">
+            <span class="custom-select-label">正文</span>
+            <svg class="icon caret"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="custom-select-menu">
+            <button type="button" data-value="p" class="selected"><span>正文</span><small>普通段落</small></button>
+            <button type="button" data-value="h1"><span>标题 1</span><small>一级标题</small></button>
+            <button type="button" data-value="h2"><span>标题 2</span><small>二级标题</small></button>
+            <button type="button" data-value="h3"><span>标题 3</span><small>三级标题</small></button>
+            <button type="button" data-value="h4"><span>标题 4</span><small>四级标题</small></button>
+            <button type="button" data-value="h5"><span>标题 5</span><small>五级标题</small></button>
+            <button type="button" data-value="h6"><span>标题 6</span><small>六级标题</small></button>
+            <div class="custom-select-divider"></div>
+            <button type="button" data-value="quote"><span>引用</span><small>引用块</small></button>
+            <button type="button" data-value="ul"><span>无序列表</span><small>项目符号</small></button>
+            <button type="button" data-value="ol"><span>有序列表</span><small>数字编号</small></button>
+            <button type="button" data-value="task"><span>任务列表</span><small>待办复选框</small></button>
+            <button type="button" data-value="codeblock"><span>代码块</span><small>多行代码</small></button>
+          </div>
+        </div>
+        <span class="sep"></span>
+        <button class="tool-btn" data-cmd="bold" title="粗体"><svg class="icon"><use href="#i-bold"></use></svg></button>
+        <button class="tool-btn" data-cmd="italic" title="斜体"><svg class="icon"><use href="#i-italic"></use></svg></button>
+        <button class="tool-btn" data-cmd="strike" title="删除线"><svg class="icon"><use href="#i-strike"></use></svg></button>
+        <button class="tool-btn" data-cmd="underline" title="下划线"><svg class="icon"><use href="#i-underline"></use></svg></button>
+        <span class="sep"></span>
+        <div class="color-picker" id="colorPicker">
+          <button type="button" class="tool-btn color-trigger" id="colorPickerBtn" title="文字颜色"><span class="color-letter">A</span><span class="color-underline" id="colorIndicator"></span></button>
+          <div class="color-popover yq-popover" id="colorPopover">
+            <button type="button" class="yq-default" id="colorDefault"><span class="yq-default-swatch"></span><span>默认</span></button>
+            <div class="yq-swatches yq-grayscale" id="colorGrayscale"></div>
+            <div class="yq-swatches yq-matrix" id="colorSwatches"></div>
+            <div class="yq-section-title">渐变色</div>
+            <div class="yq-gradients" id="colorGradients"></div>
+            <div class="yq-section-title">最近使用自定义颜色</div>
+            <div class="yq-recent" id="colorRecent"><span class="yq-empty">暂无</span></div>
+            <button type="button" class="yq-more" id="colorMore"><span class="yq-wheel"></span><span>更多颜色</span><svg class="icon yq-arrow"><use href="#i-chevron"></use></svg></button>
+            <input type="color" id="colorCustom" value="#e11d48" class="yq-color-input" />
+          </div>
+        </div>
+        <div class="color-picker" id="highlightPicker">
+          <button type="button" class="tool-btn color-trigger" id="highlightPickerBtn" title="背景高亮"><span class="color-letter" id="hlLetter">A</span></button>
+          <div class="color-popover yq-popover" id="highlightPopover">
+            <button type="button" class="yq-default" id="highlightDefault"><span class="yq-default-swatch"></span><span>默认</span></button>
+            <div class="yq-swatches yq-grayscale" id="highlightGrayscale"></div>
+            <div class="yq-swatches yq-matrix" id="highlightSwatches"></div>
+            <div class="yq-section-title">最近使用自定义颜色</div>
+            <div class="yq-recent" id="highlightRecent"><span class="yq-empty">暂无</span></div>
+            <button type="button" class="yq-more" id="highlightMore"><span class="yq-wheel"></span><span>更多颜色</span><svg class="icon yq-arrow"><use href="#i-chevron"></use></svg></button>
+            <input type="color" id="highlightCustom" value="#fde047" class="yq-color-input" />
+          </div>
+        </div>
+        <span class="sep"></span>
+        <button class="tool-btn" data-cmd="ul" title="无序列表"><svg class="icon"><use href="#i-ul"></use></svg></button>
+        <button class="tool-btn" data-cmd="ol" title="有序列表"><svg class="icon"><use href="#i-ol"></use></svg></button>
+        <button class="tool-btn" data-cmd="task" title="任务列表"><svg class="icon"><use href="#i-task"></use></svg></button>
+      </div>
+
+      <div class="tool-group tool-group-base">
+        <button class="tool-btn" data-cmd="link" title="链接"><svg class="icon"><use href="#i-link"></use></svg></button>
+        <button class="tool-btn" data-cmd="quote" title="引用"><svg class="icon"><use href="#i-quote"></use></svg></button>
+        <button class="tool-btn" data-cmd="hr" title="分割线"><svg class="icon"><use href="#i-hr"></use></svg></button>
+        <span class="sep"></span>
+        <button class="tool-btn" data-cmd="image" title="图片"><svg class="icon"><use href="#i-image"></use></svg></button>
+        <button class="tool-btn" data-cmd="code" title="行内代码"><svg class="icon"><use href="#i-code"></use></svg></button>
+        <button class="tool-btn" data-cmd="codeblock" title="代码块"><svg class="icon"><use href="#i-codeblock"></use></svg></button>
+        <div class="custom-select compact" id="mathPicker" title="上标 / 下标 / 公式">
+          <button type="button" class="custom-select-trigger">
+            <svg class="icon"><use href="#i-sigma"></use></svg>
+            <svg class="icon caret"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="custom-select-menu">
+            <button type="button" data-cmd="superscript" title="上标 ^文字^"><span class="math-mark">x²</span> 上标</button>
+            <button type="button" data-cmd="subscript" title="下标 ~文字~"><span class="math-mark">x₂</span> 下标</button>
+            <div class="custom-select-divider"></div>
+            <button type="button" data-cmd="inlineMath" title="行内公式 $…$"><span class="math-mark">∑</span> 行内公式</button>
+            <button type="button" data-cmd="mathBlock" title="公式块 $$…$$"><span class="math-mark">∑</span> 公式块</button>
+          </div>
+        </div>
+        <div class="table-picker" id="tablePicker">
+          <button type="button" class="tool-btn" id="tablePickerBtn" title="插入表格"><svg class="icon"><use href="#i-table"></use></svg></button>
+          <div class="table-grid-popover" id="tableGridPopover">
+            <div class="table-grid-title">插入表格</div>
+            <div class="table-grid" id="tableGrid"></div>
+            <div class="table-grid-label" id="tableGridLabel">移动鼠标选择行列</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group tool-group-base">
+        <button class="tool-btn" id="btnFormatPainter" data-cmd="formatPainter" title="格式刷：先选中带格式的文本，再点此按钮，然后选中目标文本即可套用格式（Esc 取消）"><svg class="icon"><use href="#i-format-brush"></use></svg></button>
+        <button class="tool-btn" data-cmd="clearFormat" title="清除格式：去掉所选内容的 Markdown 标记，保留纯文本"><svg class="icon"><use href="#i-clear-format"></use></svg></button>
+        <span class="sep"></span>
+        <div class="custom-select compact" id="sizeSelect" data-value="16" title="字号">
+          <button type="button" class="custom-select-trigger">
+            <span class="custom-select-label">16px</span>
+            <svg class="icon caret"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="custom-select-menu">
+            <button type="button" data-value="12"><span>12px</span><small>紧凑</small></button>
+            <button type="button" data-value="14"><span>14px</span><small>小号</small></button>
+            <button type="button" data-value="16" class="selected"><span>16px</span><small>默认</small></button>
+            <button type="button" data-value="18"><span>18px</span><small>标准</small></button>
+            <button type="button" data-value="20"><span>20px</span><small>大号</small></button>
+            <button type="button" data-value="24"><span>24px</span><small>超大</small></button>
+            <button type="button" data-value="28"><span>28px</span><small>展示</small></button>
+            <button type="button" data-value="32"><span>32px</span><small>标题级</small></button>
+          </div>
+        </div>
+        <div class="custom-select compact" id="lineHeightSelect" data-value="1.7" title="行高">
+          <button type="button" class="custom-select-trigger">
+            <span class="custom-select-label">默认</span>
+            <svg class="icon caret"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="custom-select-menu">
+            <button type="button" data-value="1.7" class="selected"><span>默认</span></button>
+            <button type="button" data-value="1"><span>1</span></button>
+            <button type="button" data-value="1.15"><span>1.15</span></button>
+            <button type="button" data-value="1.5"><span>1.5</span></button>
+            <button type="button" data-value="2"><span>2</span></button>
+            <button type="button" data-value="2.5"><span>2.5</span></button>
+            <button type="button" data-value="3"><span>3</span></button>
+          </div>
+        </div>
+        <span class="sep"></span>
+        <div class="align-picker" id="alignPicker">
+          <button type="button" class="tool-btn" id="alignPickerBtn" title="对齐方式"><svg class="icon"><use href="#i-align"></use></svg></button>
+          <div class="align-popover" id="alignPopover">
+            <button type="button" class="align-opt selected" data-align="left" title="左对齐"><svg class="icon"><use href="#i-align-left"></use></svg></button>
+            <button type="button" class="align-opt" data-align="center" title="居中对齐"><svg class="icon"><use href="#i-align-center"></use></svg></button>
+            <button type="button" class="align-opt" data-align="right" title="右对齐"><svg class="icon"><use href="#i-align-right"></use></svg></button>
+            <button type="button" class="align-opt" data-align="justify" title="两端对齐"><svg class="icon"><use href="#i-align-justify"></use></svg></button>
+          </div>
+        </div>
+        <div class="custom-select compact indent-picker" id="indentPicker" title="缩进">
+          <button type="button" class="custom-select-trigger">
+            <svg class="icon indent-main-icon"><use href="#i-indent"></use></svg>
+            <svg class="icon caret"><use href="#i-chevron-down"></use></svg>
+          </button>
+          <div class="custom-select-menu">
+            <button type="button" data-action="format:indentIn" title="增加缩进 (Ctrl+])"><svg class="icon"><use href="#i-indent-in"></use></svg></button>
+            <button type="button" data-action="format:indentOut" title="减少缩进 (Ctrl+[)"><svg class="icon"><use href="#i-indent-out"></use></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar-tail">
+        <button class="tool-btn tool-publish tool-pinned" id="btnPublishNow" title="预览变更并发布" aria-label="预览变更并发布"><svg class="icon"><use href="#i-publish"></use></svg></button>
+        <button class="tool-btn" id="btnCycleView" title="视图：分屏显示（点击切换）"><svg class="icon"><use id="cycleViewIcon" href="#i-view-split"></use></svg></button>
+        <button class="tool-btn" id="btnFocusMode" title="专注模式（Esc 退出）"><svg class="icon"><use href="#i-focus"></use></svg></button>
+        <button class="tool-btn" id="btnToggleTheme" title="切换暗色/亮色主题"><svg class="icon"><use href="#i-moon"></use></svg></button>
+        <button class="tool-btn" data-cmd="settings" title="设置"><svg class="icon"><use href="#i-settings"></use></svg></button>
+      </div>
+      <!-- 窄窗口溢出收纳：放不下的工具自动收进这里 -->
+      <div class="toolbar-overflow" id="toolbarOverflow">
+        <button class="tool-btn" id="btnToolOverflow" title="更多工具" aria-label="更多工具"><svg class="icon"><use href="#i-more"></use></svg></button>
+        <div class="toolbar-overflow-menu" id="toolOverflowMenu"></div>
+      </div>
+    </div>
+
+    <main class="main" id="mainPane">
+      <aside class="panel sidebar" id="sidebar">
+        <div class="pane-head sidebar-head">
+          <span class="sidebar-tabs">
+            <button class="sidebar-tab active" data-side-tab="tree" id="btnSideTree">目录</button>
+            <button class="sidebar-tab" data-side-tab="outline" id="btnSideOutline">大纲</button>
+          </span>
+          <span class="sidebar-head-actions">
+            <button class="mini-btn icon-btn" id="btnGlobalSearch" title="在文档中搜索 Ctrl+Shift+F"><svg class="icon"><use href="#i-search"></use></svg></button>
+            <button class="mini-btn icon-btn" id="btnChooseWorkspace" title="选择工作区"><svg class="icon"><use href="#i-folder"></use></svg></button>
+            <button class="mini-btn icon-btn" id="btnRefreshTree" title="刷新目录（同步外部文件变化）"><svg class="icon"><use href="#i-refresh"></use></svg></button>
+            <button class="mini-btn icon-btn" id="btnCollapseSidebar" title="折叠侧边栏"><svg class="icon"><use href="#i-panel-left"></use></svg></button>
+          </span>
+        </div>
+        <div class="search-panel" id="searchPanel">
+          <div class="search-box">
+            <svg class="icon"><use href="#i-search"></use></svg>
+            <input type="text" id="globalSearchInput" placeholder="搜索工作区所有文档…" autocomplete="off" />
+            <button class="search-box-close" id="btnSearchClose" title="关闭搜索"><svg class="icon"><use href="#i-search-close"></use></svg></button>
+          </div>
+          <div class="search-options">
+            <label class="find-opt"><input type="checkbox" id="searchRegex" /><span>正则</span></label>
+            <label class="find-opt"><input type="checkbox" id="searchCase" /><span>区分大小写</span></label>
+            <label class="find-opt"><input type="checkbox" id="searchGroup" checked /><span>按目录分组</span></label>
+          </div>
+          <div class="search-replace-row">
+            <input type="text" id="searchReplaceInput" placeholder="替换为（只替换当前文档）" autocomplete="off" />
+            <button class="mini-btn" id="btnSearchReplaceCurrent" title="在当前打开文档中替换本轮搜索命中的内容">替换</button>
+          </div>
+          <div class="search-meta" id="searchMeta"></div>
+          <div class="search-results" id="searchResults"></div>
+        </div>
+        <div class="tree" id="tree"><div class="tree-empty">点击“选择”打开一个本地文件夹<br>即可开始浏览和编辑 Markdown</div></div>
+        <div class="outline" id="outline"><div class="outline-empty">当前文档没有标题。<br>用 # 到 ###### 创建标题后<br>会显示在这里。</div></div>
+      </aside>
+
+      <button class="sidebar-rail" id="sidebarRail" title="拖动展开侧边栏"></button>
+
+      <section class="panel editor-pane" id="editorPane">
+        <div class="pane-head editor-pane-head">
+          <div class="tabbar" id="tabbar" title="打开多个文档，点击切换"></div>
+        </div>
+        <div class="editor-wrap">
+          <div class="gutter" id="gutter">1</div>
+          <div class="editor-input-wrap">
+            <div class="editor-highlight" id="editorHighlight" aria-hidden="true"><pre><code id="highlightCode"></code></pre></div>
+            <textarea id="editor" spellcheck="false" placeholder="在这里书写 Markdown…\n\n# 标题\n**粗体** · *斜体* · `代码`\n- 列表项"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <div class="splitter" id="splitterMain" title="拖动调整宽度"><span class="splitter-grip"></span></div>
+
+      <section class="panel preview-pane" id="previewPane">
+        <div class="pane-head">
+          <span>实时预览</span>
+          <span class="preview-head-actions">
+            <button class="mini-btn icon-btn active" id="btnTogglePreviewOutline" type="button" title="隐藏标题导轨" aria-label="显示/隐藏标题导轨"><svg class="icon"><use href="#i-log"></use></svg></button>
+            <button class="mini-btn" id="btnRefreshPreview" title="刷新预览"><svg class="icon" style="width:13px;height:13px;vertical-align:-2px"><use href="#i-refresh"></use></svg> 刷新</button>
+          </span>
+        </div>
+        <div class="preview-body" id="previewBody">
+          <article class="markdown-body" id="preview"></article>
+          <aside class="preview-outline" id="previewOutline" aria-label="文档标题导轨目录">
+            <div class="outline-rail" id="outlineRail">
+              <div class="outline-rail-list" id="outlineRailList"></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <span id="statusWorkspace">工作区：未选择</span>
+      <span id="statusFile">文件：—</span>
+      <span id="statusStats" title="点击查看写作统计">0 字 · 0 行</span>
+      <span id="statusCursor">行 1，列 1</span>
+      <span class="status-right">
+        <span class="status-menu-wrap" id="statusMoodWrap">
+          <button type="button" class="status-menu-trigger" id="statusMood" title="点击切换主题情绪色">☀️ 白昼 · 情绪色</button>
+          <div class="dropdown status-mood-menu" id="statusMoodMenu">
+            <button data-action="mood:auto" data-mood="auto">跟随时间</button>
+            <button data-action="mood:morning" data-mood="morning">🌅 清晨 · 青绿</button>
+            <button data-action="mood:day" data-mood="day">☀️ 白昼 · 品牌绿</button>
+            <button data-action="mood:dusk" data-mood="dusk">🌇 黄昏 · 暖琥珀</button>
+            <button data-action="mood:night" data-mood="night">🌙 夜间 · 安静蓝</button>
+          </div>
+        </span>
+        <span id="statusSave"><span class="status-dot"></span>未保存</span>
+        <span id="statusPublish"><span class="status-dot"></span>发布就绪</span>
+        <button class="mini-btn" id="btnToggleLog" style="border:0;background:transparent;color:#475569;font-size:11px;"><svg class="icon" style="width:13px;height:13px;vertical-align:-2px"><use href="#i-log"></use></svg> 日志</button>
+      </span>
+    </footer>
+  </div>
+
+  <!-- 发布日志抽屉 -->
+  <aside class="log-drawer" id="logDrawer">
+    <div class="log-head"><span>发布与系统日志</span><button id="btnClearLog">清空</button></div>
+    <div class="log-list" id="logList"></div>
+  </aside>
+
+  <!-- 语法演练场 -->
+  <div class="modal-backdrop" id="playgroundModal">
+    <div class="modal playground-modal">
+      <h2>语法演练场</h2>
+      <p class="desc">左侧是受支持的语法示例，右侧是实时渲染效果。点击任意示例可在下方预览，点击“插入”可把语法加入当前编辑器。</p>
+      <div class="playground-tabs">
+        <button type="button" class="active" data-tab="markdown">Markdown 基础</button>
+        <button type="button" data-tab="vitepress">VitePress 扩展</button>
+      </div>
+      <div class="playground-body">
+        <div class="playground-list" id="playgroundList"></div>
+        <div class="playground-preview-wrap">
+          <div class="pane-head"><span>渲染预览</span><span style="font-weight:400;color:#64748b">与编辑器预览使用同一渲染器</span></div>
+          <article class="markdown-body" id="playgroundPreview"></article>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btnPlaygroundClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新建文件 -->
+  <div class="modal-backdrop" id="newFileModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-file-plus"></use></svg></span><div><h2>新建 Markdown 文件</h2><p class="desc">选择保存位置并输入文件名，即可创建并打开。</p></div></div>
+      <div class="form-field full">
+        <label for="newFileName">文件名</label>
+        <input type="text" id="newFileName" placeholder="未命名文档.md" />
+      </div>
+      <button type="button" class="note full note-action" id="newFileHint" title="点击更改保存位置">
+        <svg class="icon"><use href="#i-folder"></use></svg>
+        <span class="note-label">保存位置</span>
+        <span class="note-value" id="newFileDir">—</span>
+        <span class="note-change">更改</span>
+      </button>
+      <div class="modal-actions">
+        <button class="btn" id="btnNewFileCancel">取消</button>
+        <button class="btn primary" id="btnNewFileConfirm">创建并打开</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用确认 -->
+  <div class="modal-backdrop" id="confirmModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon warn"><svg class="icon"><use href="#i-help"></use></svg></span><div><h2 id="confirmTitle">请确认</h2><p class="desc" id="confirmMessage"></p><p class="modal-detail" id="confirmDetail"></p></div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnConfirmCancel">取消</button>
+        <button class="btn primary" id="btnConfirmOk">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关闭窗口确认（有未保存文档时） -->
+  <div class="modal-backdrop" id="closeConfirmModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon warn"><svg class="icon"><use href="#i-help"></use></svg></span><div><h2>关闭知序</h2><p class="desc">有文档尚未保存，选择保留方式。</p><p class="modal-detail" id="closeConfirmDetail"></p></div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnCloseCancel">取消</button>
+        <button class="btn" id="btnCloseDiscard">不保存</button>
+        <button class="btn primary" id="btnCloseSave">保存并关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 查找与替换 -->
+  <div class="modal-backdrop" id="findModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-search"></use></svg></span><div><h2>查找与替换</h2><p class="desc">在当前文档中查找，可选替换。</p></div></div>
+      <div class="form-field full">
+        <label for="findInput">查找</label>
+        <input type="text" id="findInput" placeholder="输入要查找的内容" />
+      </div>
+      <div class="form-field full">
+        <label for="replaceInput">替换为</label>
+        <input type="text" id="replaceInput" placeholder="输入替换内容（可留空表示删除）" />
+      </div>
+      <div class="find-options full">
+        <label class="find-opt"><input type="checkbox" id="findCase" /><span>区分大小写</span></label>
+        <label class="find-opt"><input type="checkbox" id="findRegex" /><span>正则表达式</span></label>
+        <label class="find-opt"><input type="checkbox" id="findWord" /><span>全字匹配</span></label>
+      </div>
+      <div class="note full" id="findHint">
+        <svg class="icon"><use href="#i-help"></use></svg>
+        <span id="findHintText">Enter 查找下一个，Shift+Enter 查找上一个。</span>
+      </div>
+      <div class="modal-actions find-actions">
+        <button class="btn" id="btnFindCancel">关闭</button>
+        <button class="btn" id="btnFindReplace">替换</button>
+        <button class="btn" id="btnFindReplaceAll">全部替换</button>
+        <button class="btn primary" id="btnFindConfirm">查找下一个</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 本地版本历史 -->
+  <div class="modal-backdrop" id="historyModal">
+    <div class="modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-refresh"></use></svg></span><div><h2>本地版本历史</h2><p class="desc" id="historyDesc">每次保存会生成一个快照，可恢复到任意版本。</p></div></div>
+      <div class="history-list" id="historyList"><div class="history-empty">加载中…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnHistoryClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 已移出的文件夹管理 -->
+  <div class="modal-backdrop" id="excludedModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-folder"></use></svg></span><div><h2>已移出的文件夹</h2><p class="desc">这些文件夹仍在磁盘上，只是不再显示在目录树中。可随时恢复。</p></div></div>
+      <div class="excluded-list" id="excludedList"><div class="tree-empty">加载中…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnExcludedClose">关闭</button>
+        <button class="btn primary" id="btnExcludedRestoreAll">全部恢复</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 版本对比 -->
+  <div class="modal-backdrop" id="diffModal">
+    <div class="modal modal-wide diff-modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-refresh"></use></svg></span><div><h2>版本对比</h2><p class="desc" id="diffDesc">左侧为历史版本，右侧为当前内容。</p></div></div>
+      <div class="diff-legend"><span class="diff-add">＋ 新增</span><span class="diff-del">－ 删除</span><span class="diff-same">　 未变</span></div>
+      <div class="diff-body" id="diffBody"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnDiffClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 链接体检 -->
+  <div class="modal-backdrop" id="linksModal">
+    <div class="modal modal-wide">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-link"></use></svg></span><div><h2>链接体检</h2><p class="desc" id="linksDesc">正在扫描工作区文档的内部链接与图片引用…</p></div></div>
+      <div class="links-list" id="linksList"><div class="history-empty">正在扫描，请稍候…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnLinksClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Frontmatter 可视化编辑 -->
+  <div class="modal-backdrop" id="frontmatterModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-file-modern"></use></svg></span><div><h2>文档元信息</h2><p class="desc">编辑文档顶部的 YAML Frontmatter，发布到 VitePress 后作为页面标题与描述。</p></div></div>
+      <div class="form-field full">
+        <label for="fmTitle">标题 title</label>
+        <input type="text" id="fmTitle" placeholder="页面标题" />
+      </div>
+      <div class="form-field full">
+        <label for="fmDescription">描述 description</label>
+        <input type="text" id="fmDescription" placeholder="页面描述（可选）" />
+      </div>
+      <div class="form-field full">
+        <label for="fmOrder">排序 order（可选，数字越小越靠前）</label>
+        <input type="text" id="fmOrder" placeholder="例如 10" />
+      </div>
+      <div class="form-field full">
+        <label for="fmExtra">其他字段（每行 key: value，高级）</label>
+        <textarea id="fmExtra" rows="4" placeholder="tag: 笔记&#10;date: 2026-11-25" spellcheck="false" style="font-family:var(--font-mono)"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btnFrontmatterRemove" style="margin-right:auto">移除 Frontmatter</button>
+        <button class="btn" id="btnFrontmatterCancel">取消</button>
+        <button class="btn primary" id="btnFrontmatterSave">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快速打开（Ctrl+P） -->
+  <div class="modal-backdrop quick-open" id="quickOpenModal">
+    <div class="modal modal-sm quick-open-modal">
+      <div class="quick-open-input-wrap">
+        <svg class="icon"><use href="#i-search"></use></svg>
+        <input type="text" id="quickOpenInput" placeholder="输入文件名或路径，快速打开文档…" autocomplete="off" spellcheck="false" />
+        <kbd>Esc</kbd>
+      </div>
+      <div class="quick-open-list" id="quickOpenList"></div>
+      <div class="quick-open-hint">↑↓ 选择 · Enter 打开 · Esc 关闭</div>
+    </div>
+  </div>
+
+  <!-- 命令面板（Ctrl+K） -->
+  <div class="modal-backdrop quick-open" id="commandPaletteModal">
+    <div class="modal modal-sm quick-open-modal">
+      <div class="quick-open-input-wrap">
+        <svg class="icon"><use href="#i-search"></use></svg>
+        <input type="text" id="commandInput" placeholder="输入命令，例如：体检、图谱、模板、视图…" autocomplete="off" spellcheck="false" />
+        <kbd>Esc</kbd>
+      </div>
+      <div class="quick-open-list" id="commandList"></div>
+      <div class="quick-open-hint">↑↓ 选择 · Enter 执行 · Esc 关闭</div>
+    </div>
+  </div>
+
+  <!-- 发布前体检报告 -->
+  <div class="modal-backdrop" id="publishReportModal">
+    <div class="modal modal-wide report-modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-help"></use></svg></span><div><h2>发布前体检</h2><p class="desc" id="reportDesc">正在检查链接、图片、文档结构与发布配置…</p></div></div>
+      <div class="report-filters">
+        <button type="button" class="report-filter active" data-report-filter="all">全部</button>
+        <button type="button" class="report-filter" data-report-filter="error">错误</button>
+        <button type="button" class="report-filter" data-report-filter="warning">警告</button>
+        <button type="button" class="report-filter" data-report-filter="info">提示</button>
+      </div>
+      <div class="report-list" id="reportList"><div class="history-empty">正在体检，请稍候…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnReportClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 草稿恢复 -->
+  <div class="modal-backdrop" id="draftRestoreModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon warn"><svg class="icon"><use href="#i-refresh"></use></svg></span><div><h2>恢复未提交内容</h2><p class="desc">检测到上次退出前尚未保存的草稿，可选择恢复。</p></div></div>
+      <div class="draft-list" id="draftList"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnDraftIgnore">稍后处理</button>
+        <button class="btn" id="btnDraftClear">删除草稿</button>
+        <button class="btn primary" id="btnDraftRestore">恢复选中</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 写作统计 -->
+  <div class="modal-backdrop" id="writingStatsModal">
+    <div class="modal modal-wide stats-modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-log"></use></svg></span><div><h2>写作统计</h2><p class="desc" id="statsDesc">当前文档的篇幅、结构与写作规范检查。</p></div></div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="stats-section-title">写作建议</div>
+      <div class="stats-issues" id="statsIssues"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnStatsClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文档关系图谱 -->
+  <div class="modal-backdrop" id="graphModal">
+    <div class="modal modal-wide graph-modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-link"></use></svg></span><div><h2>文档关系图谱</h2><p class="desc" id="graphDesc">正在扫描工作区文档内链…</p></div></div>
+      <div class="graph-toolbar" id="graphToolbar">
+        <div class="graph-search"><svg class="icon"><use href="#i-search"></use></svg><input type="text" id="graphFilter" placeholder="筛选文档名或目录…" /></div>
+        <div class="graph-actions">
+          <button type="button" class="btn small" id="btnGraphFit">适应窗口</button>
+          <button type="button" class="btn small" id="btnGraphZoomIn" title="放大">＋</button>
+          <button type="button" class="btn small" id="btnGraphZoomOut" title="缩小">－</button>
+        </div>
+      </div>
+      <div class="graph-layout">
+        <div class="graph-stage" id="graphStage"></div>
+        <aside class="graph-side" id="graphSide"></aside>
+      </div>
+      <div class="graph-tip" id="graphTip">滚轮缩放 · 拖拽平移 · 放大后显示文档名 · 点击节点打开文档</div>
+      <div class="modal-actions">
+        <button class="btn" id="btnGraphClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模板选择 -->
+  <div class="modal-backdrop" id="templateModal">
+    <div class="modal">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-file-plus"></use></svg></span><div><h2>从模板创建</h2><p class="desc">选择模板后会以模板内容新建文档；自定义模板放在 userData/templates 目录。</p></div></div>
+      <div class="template-list" id="templateList"><div class="history-empty">加载中…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnTemplateFolder" style="margin-right:auto">打开自定义模板目录</button>
+        <button class="btn" id="btnTemplateCancel">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 更新检查 -->
+  <div class="modal-backdrop" id="updateModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-refresh"></use></svg></span><div><h2>检查更新</h2><p class="desc" id="updateDesc">正在查询 GitHub Releases…</p></div></div>
+      <div class="update-content" id="updateContent"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnUpdateClose">关闭</button>
+        <button class="btn" id="btnUpdateSettings">去设置</button>
+        <button class="btn primary" id="btnUpdateOpen" hidden>打开发布页</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标签页右键菜单 -->
+  <div class="context-menu" id="tabContextMenu" role="menu"></div>
+
+  <!-- 移动到文件夹 -->
+  <div class="modal-backdrop" id="moveModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-folder"></use></svg></span><div><h2>移动到文件夹</h2><p class="desc" id="moveDesc">选择目标文件夹，文档内的相对图片路径不会自动更新。</p></div></div>
+      <div class="move-current" id="moveCurrent"></div>
+      <div class="move-folder-list" id="moveFolderList"></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnMoveCancel">取消</button>
+        <button class="btn primary" id="btnMoveConfirm" disabled>移动到此处</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 发布预览：选择要发布的变更 -->
+  <div class="modal-backdrop" id="publishModal">
+    <div class="modal modal-wide">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use href="#i-refresh"></use></svg></span><div><h2>发布变更</h2><p class="desc" id="publishDesc">正在对比本地与线上文件…</p></div></div>
+      <div class="publish-summary" id="publishSummary"></div>
+      <div class="publish-toolbar">
+        <label class="pub-check-all"><input type="checkbox" id="pubCheckAll" checked /><span>全选</span></label>
+        <span class="pub-toolbar-right"><span id="pubSelectedCount">已选 0 个</span></span>
+      </div>
+      <div class="publish-list" id="publishList"><div class="history-empty">正在扫描变更，请稍候…</div></div>
+      <div class="modal-actions">
+        <button class="btn" id="btnPublishCancel">取消</button>
+        <button class="btn primary" id="btnPublishConfirm" disabled>发布选中文件</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub 发布设置 -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <h2>设置</h2>
+      <p class="desc">编辑偏好与 GitHub 发布配置。Token 在 Windows 上优先使用系统 DPAPI 加密保存。</p>
+      <div class="settings-ws-hint" id="settingsWsHint">当前工作区：未选择</div>
+      <div class="settings-section-title full">编辑偏好</div>
+      <div class="form-grid">
+        <div class="form-field checkbox">
+          <input type="checkbox" id="autoSaveEnabled" />
+          <label for="autoSaveEnabled">启用自动保存</label>
+        </div>
+        <div class="form-field">
+          <label for="autoSaveDelay">自动保存间隔（秒）</label>
+          <input type="number" id="autoSaveDelay" min="5" max="600" value="30" />
+        </div>
+      </div>
+      <div class="settings-section-title full">GitHub 发布</div>
+      <div class="form-grid">
+        <div class="form-field checkbox full">
+          <input type="checkbox" id="ghAutoPublish" />
+          <label for="ghAutoPublish">启用自动发布（保存后提交并触发 Actions；不勾选也可以手动发布）</label>
+        </div>
+        <div class="form-field checkbox full">
+          <input type="checkbox" id="ghConvertSyntax" checked />
+          <label for="ghConvertSyntax">发布时转换旧版扩展语法为兼容 HTML（仅影响老文档，新版已直接写入内联 HTML）</label>
+        </div>
+        <div class="form-field"><label for="ghOwner">Repository Owner</label><input type="text" id="ghOwner" placeholder="例如 octocat" /></div>
+        <div class="form-field"><label for="ghRepo">Repository Name</label><input type="text" id="ghRepo" placeholder="例如 my-docs" /></div>
+        <div class="form-field"><label for="ghBranch">Branch</label><input type="text" id="ghBranch" placeholder="main" /></div>
+        <div class="form-field"><label for="ghPrefix">仓库内目标目录</label><input type="text" id="ghPrefix" placeholder="docs" /></div>
+        <div class="form-field full"><label for="ghToken">Access Token（需仓库写权限：经典 Token 勾 repo/public_repo；细粒度 Token 给 Contents 读写并授权该仓库）</label><input type="password" id="ghToken" placeholder="ghp_ 或 github_pat_..." /></div>
+        <div class="form-field"><label for="ghWorkflow">Workflow 文件</label><input type="text" id="ghWorkflow" placeholder="deploy.yml" /></div>
+        <div class="form-field"><label for="ghWorkflowRef">Workflow Ref（留空同 Branch）</label><input type="text" id="ghWorkflowRef" placeholder="main" /></div>
+        <div class="form-field full"><label for="ghMessage">提交信息模板（支持 {file} / {path}）</label><input type="text" id="ghMessage" placeholder="docs: update {file}" /></div>
+        <div class="form-field full gh-check-row">
+          <button class="btn" id="btnCheckGithub" type="button">测试连接与权限</button>
+          <span class="gh-check-status" id="ghCheckStatus"></span>
+        </div>
+        <div class="gh-check-result full" id="ghCheckResult" hidden></div>
+        <div class="note warn full">
+          <svg class="icon"><use href="#i-help"></use></svg>
+          <span>Token 属于敏感信息，请勿把生成的 config.json 上传或分享。若系统不支持加密，应用会在日志中给出警告。</span>
+        </div>
+      </div>
+      <div class="settings-section-title full">更新检查</div>
+      <div class="form-grid">
+        <div class="form-field full"><label for="updateRepo">发布仓库（owner/repo，例如 DOIT008/yuque-kb）</label><input type="text" id="updateRepo" placeholder="留空则不检查更新" /></div>
+        <div class="form-field checkbox full"><input type="checkbox" id="updateEnabled" /><label for="updateEnabled">允许检查更新（仅手动触发时联网）</label></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btnSettingsCancel">取消</button>
+        <button class="btn primary" id="btnSettingsSave">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用输入弹窗（新建文件夹 / 重命名） -->
+  <div class="modal-backdrop" id="promptModal">
+    <div class="modal modal-sm">
+      <div class="modal-head"><span class="modal-icon accent"><svg class="icon"><use id="promptIconUse" href="#i-edit"></use></svg></span><div><h2 id="promptTitle">重命名</h2><p class="desc" id="promptDesc"></p></div></div>
+      <div class="form-field full">
+        <label for="promptInput" id="promptLabel">名称</label>
+        <input type="text" id="promptInput" placeholder="" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="btnPromptCancel">取消</button>
+        <button class="btn primary" id="btnPromptConfirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 图片预览弹窗 -->
+  <div class="modal-backdrop image-viewer" id="imageViewer" role="dialog" aria-label="图片预览">
+    <div class="image-viewer-inner">
+      <div class="image-viewer-bar">
+        <span class="image-viewer-name" id="imageViewerName">图片</span>
+        <span class="image-viewer-actions">
+          <button class="iv-btn" id="btnCopyImageName" title="复制文件名">
+            <svg class="icon"><use href="#i-copy"></use></svg><span>名字</span>
+          </button>
+          <button class="iv-btn" id="btnCopyImagePath" title="复制相对路径（可直接写进 Markdown）">
+            <svg class="icon"><use href="#i-link"></use></svg><span>路径</span>
+          </button>
+          <button class="iv-btn iv-close" id="btnCloseImageViewer" title="关闭预览" aria-label="关闭预览">
+            <svg class="icon"><use href="#i-close"></use></svg>
+          </button>
+        </span>
+      </div>
+      <div class="image-viewer-stage" id="imageViewerStage"><img id="imageViewerImg" alt="图片预览" /></div>
+    </div>
+  </div>
+
+  <!-- 目录树右键菜单 -->
+  <div class="context-menu" id="contextMenu" role="menu"></div>
+
+  <!-- 专注模式浮动控制条：默认低透明度，鼠标靠近时显现 -->
+  <div class="focus-bar" id="focusBar" aria-label="专注模式控制">
+    <div class="focus-bar-modes">
+      <button type="button" data-focus-view="editor">编辑</button>
+      <button type="button" data-focus-view="split">分屏</button>
+      <button type="button" data-focus-view="preview">预览</button>
+    </div>
+    <span class="focus-bar-sep"></span>
+    <button type="button" class="focus-exit" id="btnFocusExit" title="退出专注模式 (Esc)">退出专注</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="markdown.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
