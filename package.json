@@ -49,7 +49,7 @@
           ]
         }
       ],
-      "artifactName": "知序-${version}-${arch}.${ext}"
+      "artifactName": "zhixu-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -59,7 +59,7 @@
       "shortcutName": "知序"
     },
     "portable": {
-      "artifactName": "知序-${version}-portable.${ext}"
+      "artifactName": "zhixu-${version}-portable.${ext}"
     }
   },
   "dependencies": {
