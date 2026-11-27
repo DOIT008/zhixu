@@ -30,15 +30,16 @@ jobs:
       - name: Build Windows installers
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Continue'
           npm run build:win > build-log.txt 2>&1
           $code = $LASTEXITCODE
           Get-Content build-log.txt
           if ($code -ne 0) {
-            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Build failed - exit code $code"
-            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```'
-            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value (Get-Content build-log.txt -Tail 120)
-            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value '```'
+            git config user.name "CI"
+            git config user.email "ci@example.com"
+            git checkout -B ci-build-log
+            git add -f build-log.txt
+            git commit -m "build log for failed run"
+            git push -f origin ci-build-log
             exit $code
           }
 
