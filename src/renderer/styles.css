@@ -881,17 +881,25 @@ body.search-active .outline { display: none !important; }
   width: 6px; height: 6px; border-radius: 50%;
   background: #f59e0b; margin-left: 6px; vertical-align: 1px;
 }
+/* 文件夹 / 文件图标渐变跟随主题色：由 --accent 派生浅深两档 */
+.icon-grad-folder-back-a { stop-color: color-mix(in srgb, var(--accent) 38%, white); }
+.icon-grad-folder-back-b { stop-color: color-mix(in srgb, var(--accent) 76%, white); }
+.icon-grad-folder-front-a { stop-color: color-mix(in srgb, var(--accent) 82%, white); }
+.icon-grad-folder-front-b { stop-color: var(--accent-strong); }
+.icon-grad-file-a { stop-color: color-mix(in srgb, var(--accent) 3%, white); }
+.icon-grad-file-b { stop-color: color-mix(in srgb, var(--accent) 12%, white); }
+
 .tree-node .caret { width: 11px; text-align: center; color: var(--text-faint); font-size: 12px; flex: none; }
 .tree-node .node-icon {
   width: 18px; height: 18px; flex: none;
   stroke: none;
-  filter: drop-shadow(0 1px 2px rgba(5, 150, 105, .20));
-  transition: filter .15s, transform .15s;
+  filter: drop-shadow(0 1px 2px var(--accent-soft));
+  transition: filter .25s ease, transform .15s;
 }
-.tree-node:hover .node-icon { filter: drop-shadow(0 2px 4px rgba(5, 150, 105, .28)); transform: translateY(-1px); }
-.tree-node.dir .node-icon { filter: drop-shadow(0 1px 2px rgba(5, 150, 105, .24)); }
-.tree-node.dir:hover .node-icon { filter: drop-shadow(0 2px 4px rgba(5, 150, 105, .32)) brightness(1.05); }
-.tree-node.dir.active .node-icon { filter: drop-shadow(0 2px 4px rgba(5, 150, 105, .32)) saturate(1.1); }
+.tree-node:hover .node-icon { filter: drop-shadow(0 2px 4px var(--accent-soft)); transform: translateY(-1px); }
+.tree-node.dir .node-icon { filter: drop-shadow(0 1px 2px var(--accent-soft)); }
+.tree-node.dir:hover .node-icon { filter: drop-shadow(0 2px 4px var(--accent-soft)) brightness(1.05); }
+.tree-node.dir.active .node-icon { filter: drop-shadow(0 2px 4px var(--accent-soft)) saturate(1.1); }
 .tree-node .node-name { overflow: hidden; text-overflow: ellipsis; }
 
 /* 未发布更改标识（git 风格 M/A/D 徽标 + 文件夹聚合圆点） */
@@ -1113,7 +1121,7 @@ body.source-plain .editor-highlight { visibility: hidden; }
   overflow: auto;
   /* 固定滚动条槽位：内容高度变化时不再左右抖动 */
   scrollbar-gutter: stable;
-  padding: 22px 28px 48px;
+  padding: 14px 28px 48px;
   font-size: calc(var(--editor-font) - 1px);
   line-height: var(--editor-line);
   color: #1f2937;
@@ -1125,6 +1133,8 @@ body.source-plain .editor-highlight { visibility: hidden; }
   margin: 1.4em 0 .6em;
   font-weight: 750;
 }
+/* 首屏元素不再叠加自身上边距，避免标题被顶得太低 */
+.markdown-body > :first-child { margin-top: 0; }
 .markdown-body h1 { font-size: 1.85em; border-bottom: 1px solid rgba(15, 23, 42, .1); padding-bottom: .3em; }
 .markdown-body h2 { font-size: 1.5em; }
 .markdown-body h3 { font-size: 1.25em; }
@@ -2561,4 +2571,107 @@ body.theme-dark .report-level.warning { background: rgba(146, 64, 14, .18); colo
 /* 尊重系统减少动画偏好 */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ==========================================================================
+   Fluent 磨砂玻璃（集中覆盖层）
+   --------------------------------------------------------------------------
+   纯色底 + 极淡彩色光斑（只作被模糊的背景）+ 半透明面板 + 强模糊 + 1px 白描边。
+   想切回纯色扁平主题：删除本段即可，不影响上方任何功能样式。
+   ========================================================================== */
+:root {
+  --glass: rgba(255, 255, 255, .66);
+  --glass-strong: rgba(255, 255, 255, .88);
+  --glass-blur: blur(28px) saturate(180%);
+}
+
+/* 背景光斑：透过玻璃隐约可见，不抢正文 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(42vw 42vw at 10% 16%, rgba(96, 165, 250, .40), transparent 70%),
+    radial-gradient(38vw 38vw at 88% 10%, rgba(167, 139, 250, .34), transparent 70%),
+    radial-gradient(44vw 44vw at 80% 90%, rgba(244, 114, 182, .26), transparent 70%),
+    radial-gradient(40vw 40vw at 18% 88%, rgba(52, 211, 153, .28), transparent 70%);
+  filter: blur(46px);
+}
+
+/* 顶栏 / 工具栏 / 状态栏 */
+.titlebar, .toolbar, .statusbar {
+  background: rgba(255, 255, 255, .56);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.titlebar { border-bottom-color: rgba(255, 255, 255, .72); }
+.toolbar { border-bottom-color: rgba(255, 255, 255, .72); }
+.statusbar { border-top-color: rgba(255, 255, 255, .72); }
+
+/* 主面板：半透明白 + 强模糊 + 白色高光描边 */
+.panel {
+  background: var(--glass);
+  border-color: rgba(255, 255, 255, .78);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .85);
+}
+.pane-head { background: rgba(248, 250, 252, .48); }
+
+/* 弹层：略高不透明度，避免透出背后文字干扰阅读 */
+.dropdown, .custom-select-menu, .color-popover, .align-popover,
+.table-grid-popover, .toolbar-overflow-menu, .context-menu,
+.app-menu-panel, .app-menu-panel .submenu, .app-menu-search {
+  background: rgba(250, 252, 255, .88);
+  border-color: rgba(255, 255, 255, .9);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+}
+.modal {
+  background: rgba(255, 255, 255, .9);
+  border-color: rgba(255, 255, 255, .9);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+}
+.log-drawer {
+  -webkit-backdrop-filter: blur(28px) saturate(175%);
+  backdrop-filter: blur(28px) saturate(175%);
+}
+
+/* 暗色主题：深色玻璃 + 冷色光斑 */
+body.theme-dark {
+  --glass: rgba(24, 34, 54, .74);
+  --glass-strong: rgba(22, 32, 51, .92);
+}
+body.theme-dark::before {
+  background:
+    radial-gradient(40vw 40vw at 10% 16%, rgba(59, 130, 246, .18), transparent 70%),
+    radial-gradient(36vw 36vw at 88% 10%, rgba(139, 92, 246, .16), transparent 70%),
+    radial-gradient(42vw 42vw at 80% 90%, rgba(236, 72, 153, .12), transparent 70%),
+    radial-gradient(38vw 38vw at 18% 88%, rgba(16, 185, 129, .14), transparent 70%);
+}
+body.theme-dark .titlebar,
+body.theme-dark .toolbar,
+body.theme-dark .statusbar {
+  background: rgba(20, 29, 47, .62);
+  border-color: rgba(148, 163, 184, .16);
+}
+body.theme-dark .panel {
+  border-color: rgba(148, 163, 184, .18);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+body.theme-dark .pane-head { background: rgba(23, 32, 51, .5); }
+body.theme-dark .dropdown, body.theme-dark .custom-select-menu,
+body.theme-dark .color-popover, body.theme-dark .align-popover,
+body.theme-dark .table-grid-popover, body.theme-dark .toolbar-overflow-menu,
+body.theme-dark .context-menu, body.theme-dark .app-menu-panel,
+body.theme-dark .app-menu-panel .submenu, body.theme-dark .app-menu-search {
+  background: rgba(22, 32, 51, .92);
+  border-color: rgba(148, 163, 184, .18);
+}
+body.theme-dark .modal {
+  background: rgba(22, 32, 51, .94);
+  border-color: rgba(148, 163, 184, .2);
 }

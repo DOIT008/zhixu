@@ -1355,6 +1355,22 @@
     }
   }
 
+  // 弹窗层级管理：后打开的弹窗自动置顶，避免嵌套弹窗（如发布弹窗里点撤销弹出的确认框）被父弹窗遮挡
+  (function setupModalStacking() {
+    let topZ = 50;
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        const el = mutation.target;
+        if (el.classList && el.classList.contains('modal-backdrop') && el.classList.contains('open')) {
+          el.style.zIndex = String(++topZ);
+        }
+      }
+    });
+    document.querySelectorAll('.modal-backdrop').forEach((el) => {
+      observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  })();
+
   function askConfirm(title, message) {
     return new Promise((resolve) => {
       const parts = String(message || '').split('\n');
