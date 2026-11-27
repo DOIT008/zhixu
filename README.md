@@ -29,8 +29,8 @@ Windows x64 用户可直接使用编译好的安装包，无需配置 Node.js �
 | 版本 | 文件 | 说明 |
 | --- | --- | --- |
 | 最新 | [Releases 页面](https://github.com/DOIT008/zhixu/releases/latest) | 自动构建的正式版，含安装包与便携版 |
-| v1.0.0 | `知序-1.0.0-x64.exe` | NSIS 安装程序，可自定义安装目录 |
-| v1.0.0 | `知序-1.0.0-portable.exe` | 免安装便携版，双击即用 |
+| v1.1.0 | `zhixu-1.1.0-x64.exe` | NSIS 安装程序，可自定义安装目录 |
+| v1.1.0 | `zhixu-1.1.0-portable.exe` | 免安装便携版，双击即用 |
 
 > 应用未做代码签名，首次运行可能触发 Windows SmartScreen 提示，选择「仍要运行」即可。校验版本请对照 Releases 页面的变更记录。
 
