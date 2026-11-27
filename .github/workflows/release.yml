@@ -29,19 +29,7 @@ jobs:
 
       - name: Build Windows installers
         shell: pwsh
-        run: |
-          npm run build:win > build-log.txt 2>&1
-          $code = $LASTEXITCODE
-          Get-Content build-log.txt
-          if ($code -ne 0) {
-            git config user.name "CI"
-            git config user.email "ci@example.com"
-            git checkout -B ci-build-log
-            git add -f build-log.txt
-            git commit -m "build log for failed run"
-            git push -f origin ci-build-log
-            exit $code
-          }
+        run: npm run build:win -- --publish never
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
